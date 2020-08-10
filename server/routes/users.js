@@ -1,19 +1,10 @@
 const express = require('express'),
     router = express.Router()
+    
+const controllers = require("../controllers/users");
 
-const db = require('../models')
-const controllers = require("../controllers/messages");
-
-router.post('/signup', (req, res) => {
-    const body = req.body;
-
-    db.User.create(body)
-        .then((newUser) => {
-            res.status(201).json(newUser);
-        })
-        .catch((err) => {
-            res.json(err);
-        })
-})
+router.post('/signup', controllers.signUp)
+router.post('/signin', controllers.signIn)
+router.get('/logout', controllers.logout)
 
 module.exports = router;

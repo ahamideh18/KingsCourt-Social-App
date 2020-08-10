@@ -1,16 +1,15 @@
 const express = require('express'),
     router = express.Router()
 
-const db = require('../models')
-const controllers = require("../controllers/messages");
+const controllers = require('../controllers/messages');
+const middleware = require('../middleware/auth')
 
-console.log(db)
 router.route('/')
     .get(controllers.getMessages)
-    .post(controllers.createMessage)
+    .post(middleware.checkAuth, controllers.createMessage)
 
 router.route('/:message_id')
     .get(controllers.getMessage)
-    .delete(controllers.deleteMessage)
+    .delete(middleware.checkAuth, controllers.deleteMessage)
 
 module.exports = router;

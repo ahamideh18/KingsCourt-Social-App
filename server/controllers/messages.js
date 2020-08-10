@@ -21,18 +21,24 @@ exports.getMessage = (req, res) => {
 }
 
 exports.createMessage = (req, res) => {
-    const body = req.body;
-
-    if (!body) {
+    if (!req.body) {
         return res.status(400).json({
             success: false,
             error: 'Message cannot be empty',
         })
     }
 
-    db.Message.create(body)
-        .then((newMessage) => {
-            res.status(201).json(newMessage);
+    const message = new db.Message({ ...req.body, author: req.user._id })
+    message.save()
+        .then(() => {
+            return db.User.findById(req.user._id);
+        })
+        .then((user) => {
+            user.messages.unshift(message);
+            user.save();
+        })
+        .then(() => {
+            res.status(201).json(message)
         })
         .catch((err) => {
             res.json(err);

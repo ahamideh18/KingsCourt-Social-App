@@ -6,7 +6,7 @@ var messageSchema = mongoose.Schema({
         required: true,
         maxLength: 248
     },
-    user: {
+    author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
