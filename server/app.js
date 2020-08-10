@@ -3,8 +3,7 @@ const express = require('express'),
 
 const bodyParser = require('body-parser'),
     cors = require('cors'),
-    cookieParser = require('cookie-parser'),
-    jwt = require('jsonwebtoken');
+    cookieParser = require('cookie-parser')
 
 require('dotenv').config();
 

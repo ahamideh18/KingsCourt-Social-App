@@ -22,5 +22,10 @@ var messageSchema = mongoose.Schema({
     ]
 }, { timestamps: true });
 
+messageSchema.pre('remove', function(next) {
+    console.log('REMOVING')
+    this.model('User').remove({ messages: this._id }, next);
+});
+
 const Message = mongoose.model('Message', messageSchema);
 module.exports = Message;

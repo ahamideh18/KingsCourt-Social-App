@@ -9,6 +9,7 @@ exports.signUp = (req, res) => {
         .then((newUser) => {
             var token = jwt.sign({ _id: newUser._id }, process.env.AUTH_SECRET, { expiresIn: "60 days" });
             res.cookie('nToken', token, { maxAge: 900000, httpOnly: true });
+            // res.redirect('/')
             return res.status(200).json(newUser);
         })
         .catch((err) => {
@@ -31,6 +32,7 @@ exports.signIn = (req, res) => {
                 }
                 const token = jwt.sign({ _id: user._id }, process.env.AUTH_SECRET, { expiresIn: "60 days" });
                 res.cookie("nToken", token, { maxAge: 900000, httpOnly: true });
+                // res.redirect('/')
                 return res.status(200).json('SIGN IN SUCCESS')
             })
         })

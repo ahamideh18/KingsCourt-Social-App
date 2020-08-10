@@ -24,6 +24,12 @@ var userSchema = mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Message"
         }
+    ],
+    likedMessages: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Message"
+        }
     ]
 }, { timestamps: true });
 
