@@ -8,7 +8,6 @@ exports.signUp = (req, res) => {
     db.User.create(body)
         .then((newUser) => {
             var token = jwt.sign({ _id: newUser._id }, process.env.AUTH_SECRET, { expiresIn: "60 days" });
-            console.log(token)
             res.cookie('nToken', token, { maxAge: 900000, httpOnly: true });
             return res.status(200).json(newUser);
         })

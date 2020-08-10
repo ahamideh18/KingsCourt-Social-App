@@ -10,6 +10,6 @@ router.route('/')
 
 router.route('/:message_id')
     .get(controllers.getMessage)
-    .delete(middleware.checkAuth, controllers.deleteMessage)
+    .delete(middleware.checkMessageOwner, controllers.deleteMessage)
 
 module.exports = router;
