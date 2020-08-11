@@ -92,19 +92,14 @@ exports.likeMessage = (req, res) => {
 }
 
 exports.deleteMessage = (req, res) => {
-    db.Message.findByIdAndRemove(req.params.message_id, (err) => {
-        if (err) {
-            res.redirect('/')
-        } else {
-            res.status(201).json("DELETED")
-        }
-    })
-    // .then(() => {
-    //     res.json({ message: 'DELETED' });
-    // })
-    // .catch((err) => {
-    //     res.send(err);
-    // })
+    db.Message.findById(req.params.message_id)
+        .then((message) => {
+            message.remove()
+            res.json({ message: 'DELETED' });
+        })
+        .catch((err) => {
+            res.send(err);
+        })
 }
 
 module.exports = exports;

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const User = require('./user')
 
 var messageSchema = mongoose.Schema({
     text: {
@@ -22,9 +23,8 @@ var messageSchema = mongoose.Schema({
     ]
 }, { timestamps: true });
 
-messageSchema.pre('remove', function(next) {
-    console.log('REMOVING')
-    this.model('User').remove({ messages: this._id }, next);
+messageSchema.pre('remove', { query: true }, function (callback) {
+    console.log('reee has been removed');
 });
 
 const Message = mongoose.model('Message', messageSchema);
