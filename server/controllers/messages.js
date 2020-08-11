@@ -92,9 +92,8 @@ exports.likeMessage = (req, res) => {
 }
 
 exports.deleteMessage = (req, res) => {
-    db.Message.findById(req.params.message_id)
+    db.Message.findOneAndDelete({_id: req.params.message_id})
         .then((message) => {
-            message.remove()
             res.json({ message: 'DELETED' });
         })
         .catch((err) => {

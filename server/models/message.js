@@ -23,8 +23,13 @@ var messageSchema = mongoose.Schema({
     ]
 }, { timestamps: true });
 
-messageSchema.pre('remove', { query: true }, function (callback) {
-    console.log('reee has been removed');
+messageSchema.post('findOneAndDelete', { query: true }, (returnedMessage) => {
+    User.findById(returnedMessage.author)
+        .then((user) => {
+            const idx = user.messages.indexOf(returnedMessage._id)
+            user.messages.splice(idx, 1)
+            user.save()
+        })
 });
 
 const Message = mongoose.model('Message', messageSchema);
