@@ -2,6 +2,11 @@ var db = require('../models');
 
 exports.getMessages = (req, res) => {
     db.Message.find()
+        .sort({ createdAt: "desc" })
+        .populate("author", {
+            username: true,
+            profileImageUrl: true
+        })
         .then((messages) => {
             res.json(messages);
         })
@@ -92,7 +97,7 @@ exports.likeMessage = (req, res) => {
 }
 
 exports.deleteMessage = (req, res) => {
-    db.Message.findOneAndDelete({_id: req.params.message_id})
+    db.Message.findOneAndDelete({ _id: req.params.message_id })
         .then((message) => {
             res.json({ message: 'DELETED' });
         })

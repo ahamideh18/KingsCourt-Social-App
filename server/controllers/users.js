@@ -10,7 +10,7 @@ exports.signUp = (req, res) => {
             var token = jwt.sign({ _id: newUser._id }, process.env.AUTH_SECRET, { expiresIn: "60 days" });
             res.cookie('nToken', token, { maxAge: 900000, httpOnly: true });
             // res.redirect('/')
-            return res.status(200).json(newUser);
+            return res.status(200).json(token);
         })
         .catch((err) => {
             res.json(err);
@@ -23,17 +23,18 @@ exports.signIn = (req, res) => {
     db.User.findOne({ username })
         .then((user) => {
             if (!user) {
-                return res.status(401).send({ message: "Incorrect Username or Password" });
+                return res.status(401).send({ message: "User does not exist" });
             }
 
+            const { _id, username, profileImageUrl } = user
             user.comparePassword(password, (err, isMatch) => {
                 if (!isMatch) {
                     return res.status(401).send({ message: "Incorrect Username or Password" });
                 }
-                const token = jwt.sign({ _id: user._id }, process.env.AUTH_SECRET, { expiresIn: "60 days" });
+                const token = jwt.sign({ _id }, process.env.AUTH_SECRET, { expiresIn: "60 days" });
                 res.cookie("nToken", token, { maxAge: 900000, httpOnly: true });
                 // res.redirect('/')
-                return res.status(200).json('SIGN IN SUCCESS')
+                return res.status(200).json({_id, username, profileImageUrl, token})
             })
         })
         .catch(err => {
